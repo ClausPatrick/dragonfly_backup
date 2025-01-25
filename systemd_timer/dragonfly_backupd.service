@@ -1,0 +1,12 @@
+[Unit]
+Description=backup program
+Wants=dragonfly_backupd.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/dragonfly_backup/dragonfly_backup.py
+EnvironmentFile=/etc/dragonfly_backup.config
+
+[Install]
+WantedBy=multi-user.target
+
