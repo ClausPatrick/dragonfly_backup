@@ -16,10 +16,12 @@ Mulitple destintations in config file for duplicate backups. (Chanlenge will be 
 """
 
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(filename='tmp_dragonfly_backup.log', encoding='utf-8', level=logging.DEBUG, format='%(asctime)s: %(levelname)s %(message)s')
+temp_dir_name = "/var/tmp/.df_tmp_bc"
 
-temp_dir_name = ".df_tmp_bc"
+
+
+logger = logging.getLogger(__name__)
+
 
 def _clean_lines(lines, str_ix, end_ix, set_space_dir_file=False):
     logger.info(f"_clean_lines:: start: {str_ix}, end: {end_ix} ")
@@ -100,7 +102,8 @@ def parse_config_file(cf_file, backup_vars, debug=False):
 
 
 def set_backup_backup_variables(backup_vars, debug=False):
-    backup_vars["TEMP_PATH"] = os.path.join(os.getcwd(), temp_dir_name)
+    #backup_vars["TEMP_PATH"] = os.path.join(os.getcwd(), temp_dir_name)
+    backup_vars["TEMP_PATH"] = temp_dir_name
     #dest_dir = backup_vars["DESTINATION_PATH"]
     #        os.makedirs(os.path.join(current_dir, ".df_tmp_bc"))
     now = datetime.now()
@@ -318,10 +321,11 @@ if __name__ == "__main__":
     if ("--test-config" in sys.argv):
         arg_test = True
 
+    logging.basicConfig(filename='/var/log/dragonfly_backup/dragonfly_backup.log', encoding='utf-8', level=logging.DEBUG, format='%(asctime)s: %(levelname)s %(message)s')
     if arg_test==True:
         external_config_file = "test_backup.config"
     else:
-        external_config_file = "dragonfly_backup.config"
+        external_config_file = "/etc/dragonfly_backup.config"
     logger.info(f"Starting script: dry-run: {arg_dry_run}, debug: {arg_debug}.")
 
     backup_variables = {}

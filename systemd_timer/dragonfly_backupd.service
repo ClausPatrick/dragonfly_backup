@@ -4,7 +4,9 @@ Wants=dragonfly_backupd.timer
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/dragonfly_backup/dragonfly_backup.py
+ExecStart=/usr/bin/python3 /usr/local/bin/dragonfly_backup/dragonfly_backup.py
+StandardOutput=journal
+StandardError=journal
 EnvironmentFile=/etc/dragonfly_backup.config
 
 [Install]

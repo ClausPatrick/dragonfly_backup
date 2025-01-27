@@ -37,6 +37,8 @@ echo "-Installing backup script..."
 mkdir -p $INSTALL_DIR
 cp dragonfly_backup.py $INSTALL_DIR
 chmod +x $INSTALL_DIR/dragonfly_backup.py
+mkdir -p /var/log/dragonfly_backup
+chmod 750 /var/log/dragonfly_backup
 
 echo "-Copying config file..."
 if [ ! -f $CONFIG_FILE ]; then
