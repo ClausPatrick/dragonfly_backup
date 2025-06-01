@@ -270,10 +270,16 @@ def move_tar_to_destination(backup_vars, dry_run=False, debug=False):
         
         try:
             shutil.move(current_tar, ultimate_dir)
+            if os.path.exists(current_tar):
+                logger.warning(f"File still present in temp dir {current_tar}. Proceeding removing it.")
+                os.remove(current_tar)
         except (OSError, FileNotFoundError) as e:
-            logger.error(f"Move error {e}: '{current_log}' '{ultimate_log}'.")
+            logger.error(f"Move error {e}: '{current_tar}' '{ultimate_tar}'.")
         try:
             shutil.move(current_log, ultimate_dir)
+            if os.path.exists(current_log):
+                logger.warning(f"File still present in temp dir {current_log}. Proceeding removing it.")
+                os.remove(current_log)
         except (OSError, FileNotFoundError) as e:
             logger.error(f"Move error {e}: '{current_log}' '{ultimate_log}'.")
     return 0
@@ -335,6 +341,7 @@ if __name__ == "__main__":
     tar_it_up(backup_variables, dry_run=arg_dry_run, debug=arg_debug)
     test_tar(backup_variables, dry_run=arg_dry_run, debug=arg_debug)
     move_tar_to_destination(backup_variables, dry_run=arg_dry_run, debug=arg_debug)
+
     cat_logs(backup_variables, debug=arg_debug)
     prune_old_backups(backup_variables, dry_run=arg_dry_run)
     m = f"Backup script completed."
